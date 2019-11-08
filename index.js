@@ -6,9 +6,10 @@ const client = new Client();
 
 var moment = require('moment');
 require('moment-recur');
-var schedule = require('node-schedule');
-var rInterval = moment( "2019-11-12" ).recur().every(2).weeks();
 
+
+var recurrence = moment( "2019-11-11" ).recur().every(2).weeks();
+var Aschedule = require('node-schedule');
 
 
 
@@ -24,31 +25,42 @@ function sendmessage() {
 }
 
 function gettime() {
-var recurrence = moment("2019-11-11").recur().every(2).days();
+
+
 var ats = Date.now();
 
-        var adate_ob = new Date(ats);
-        var adate = adate_ob.getDate();
-        if (adate.toString().length == 1) {
+//        var adate_ob = new Date(ats);
+//        var adate = adate_ob.getDate();
+//        if (adate.toString().length == 1) {
+//            adate = "0" + adate;
+//        }
+//        var amonth = adate_ob.getMonth() + 1;
+//        if (amonth.toString().length == 1) {
+//            amonth = "0" + amonth;
+//        }
+//        var ayear = adate_ob.getFullYear();
+var date = moment(ats).add(1, 'days');
+var adate_ob = new Date(date);
+var adate = adate_ob.getDate();
+if (adate.toString().length == 1) {
             adate = "0" + adate;
         }
         var amonth = adate_ob.getMonth() + 1;
         if (amonth.toString().length == 1) {
             amonth = "0" + amonth;
         }
-        var ayear = adate_ob.getFullYear();
-
+        var ayear = adate_ob.getFullYear()
 recurrence.fromDate(ayear + "-" + amonth + "-" + adate);
 anextDates = recurrence.next(1, "L");
 var anextdateobject = new Date(anextDates);
 var anextdateDays = anextdateobject.getDate();
-var anextdateMonth = anextdateobject.getMonth() + 1;
+var anextdateMonth = anextdateobject.getMonth() +  1;
 var anextdateYear = anextdateobject.getFullYear();
     
 
 console.log(anextDates);
 console.log("00 12 " + anextdateDays + " " + anextdateMonth + " *");
-var j = schedule.scheduleJob("00 12 " + anextdateDays + " " + anextdateMonth + " *", function(){
+var j = Aschedule.scheduleJob("00 12 " + anextdateDays + " " + anextdateMonth + " *", function(){
   sendmessage()
   gettime()
 });

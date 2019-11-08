@@ -50,9 +50,3 @@ client.on('message', message => {
 // Log our bot in using the token from https://discordapp.com/developers/applications/ me
 client.login('NjM4NjczOTE5ODEzMDkxMzY5.XblCjg.w1ckNAEGk3Tvnb2O6c5RRcWjE5A');
 
-
-
-
-        
-
-
