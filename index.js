@@ -3,6 +3,18 @@ const { Client, Attachment } = require('discord.js');
 
 // Create an instance of a Discord client
 const client = new Client();
+const admin = require('firebase-admin');
+
+let serviceAccount = require('./echucaictbot-firebase-adminsdk-beoyz-dc0255ae89');
+
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://echucaictbot.firebaseio.com"
+});
+
+var db = admin.database();
+var ref = db.ref("/");
 
 var moment = require('moment');
 require('moment-recur');
@@ -10,9 +22,6 @@ require('moment-recur');
 
 var recurrence = moment( "2019-11-11" ).recur().every(2).weeks();
 var Aschedule = require('node-schedule');
-
-
-
 
 
 
@@ -61,7 +70,17 @@ var anextdateYear = anextdateobject.getFullYear();
 console.log(anextDates);
 console.log("00 12 " + anextdateDays + " " + anextdateMonth + " *");
 var j = Aschedule.scheduleJob("00 12 " + anextdateDays + " " + anextdateMonth + " *", function(){
-  sendmessage()
+    ref.once("value", function(snapshot) {
+          data = snapshot.val();
+          controls = data.controls;
+          isRunning = controls.isRunning;
+          console.log(isRunning);
+          if (isRunning == 1) {
+            sendmessage()
+          }
+        });
+
+  
   gettime()
 });
 

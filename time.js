@@ -3,6 +3,25 @@ const { Client, Attachment } = require('discord.js');
 
 // Create an instance of a Discord client
 const client = new Client();
+var admin = require('firebase-admin');
+var serviceAccount = require("./echucaictbot-firebase-adminsdk-beoyz-dc0255ae89.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://echucaictbot.firebaseio.com"
+});
+
+var db = admin.database();
+var ref = db.ref("/");
+var getref = db.ref("/controls");
+
+
+ref.once("value", function(snapshot) {
+  data = snapshot.val();
+  controls = data.controls;
+  isRunning = controls.isRunning;
+  console.log(isRunning);
+});
 
 
 
@@ -42,9 +61,68 @@ client.on('message', message => {
         var nextdateDays = nextdateobject.getDate();
         var nextdateMonth = nextdateobject.getMonth() + 1;
         var nextdateYear = nextdateobject.getFullYear();
+        ref.once("value", function(snapshot) {
+          data = snapshot.val();
+          controls = data.controls;
+          isRunning = controls.isRunning;
+          if (isRunning == 1) {
+              message.channel.send("The next meeting will be on the :" + nextdateDays + "/" + nextdateMonth + "/" + nextdateYear);
+          } else {
+              message.channel.send("This bot is currently disabled.");
+          }
+        });
+        //message.channel.send("The next meeting will be on the :" + nextdateDays + "/" + nextdateMonth + "/" + nextdateYear);
+    } else {
+        if (message.content === '!stop') {
+        user = message.member;
+        user = user.toString();
+        if (user.includes("!")) {
+            user = user.split("!")[1].split(">")[0];
+        } else {
+            user = user.split("@")[1].split(">")[0];
+        }
+        username = client.users.get(user).username
+        if (user == '562508008777711626' || user == '519065244186705930') {
+            ref.set({
+              controls: {
+                isRunning: 0
+              }
+            });
+           message.channel.send("Done! Bot disabled."); 
+
+        } else {
+            message.channel.send("Sorry " + username + " you don't have permission to do that!");
+        }
         
-        message.channel.send("The next meeting will be on the :" + nextdateDays + "/" + nextdateMonth + "/" + nextdateYear);
+        
+    } else {
+       if (message.content === '!start') {
+        user = message.member;
+        user = user.toString();
+        if (user.includes("!")) {
+            user = user.split("!")[1].split(">")[0];
+        } else {
+            user = user.split("@")[1].split(">")[0];
+        }
+        username = client.users.get(user).username
+        if (user == '562508008777711626' || user == '519065244186705930') {
+            ref.set({
+              controls: {
+                isRunning: 1
+              }
+            });
+           message.channel.send("Done! Bot enabled."); 
+
+        } else {
+            message.channel.send("Sorry " + username + " you don't have permission to do that!");
+        }
+        
+        
+        
+        
     }
+}
+}
 });
 
 // Log our bot in using the token from https://discordapp.com/developers/applications/ me
