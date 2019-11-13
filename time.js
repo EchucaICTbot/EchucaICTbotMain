@@ -131,7 +131,7 @@ client.login('NjM4NjczOTE5ODEzMDkxMzY5.XblCjg.w1ckNAEGk3Tvnb2O6c5RRcWjE5A');
 var express = require('express')
 var app = express();
 
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 8080;
 
 app.use(express.static(__dirname + '/website'));
 
