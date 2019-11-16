@@ -121,33 +121,7 @@ client.on('message', message => {
         
         
     }
-    } else {
-       if (message.content === '!reschedule') {
-        user = message.member;
-        user = user.toString();
-        if (user.includes("!")) {
-            user = user.split("!")[1].split(">")[0];
-        } else {
-            user = user.split("@")[1].split(">")[0];
-        }
-        username = client.users.get(user).username
-        if (user == '562508008777711626' || user == '519065244186705930') {
-            ref.set({
-              controls: {
-                isRunning: 1
-              }
-            });
-           message.channel.send("Done! Bot enabled."); 
-
-        } else {
-            message.channel.send("Sorry " + username + " you don't have permission to do that!");
-        }
-        
-        
-        
-        
-    }
-    }
+    } 
 }
 });
 
