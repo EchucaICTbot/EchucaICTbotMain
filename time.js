@@ -120,8 +120,15 @@ client.on('message', message => {
         
         
         
+    } else {
+            if (message.content === '!rip') {
+        // Create the attachment using Attachment
+        const attachment = new Attachment('https://i.imgur.com/w3duR07.png');
+        // Send the attachment in the message channel
+        message.channel.send(attachment);
     }
-    } 
+    }
+    }
 }
 });
 
