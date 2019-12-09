@@ -123,7 +123,7 @@ client.on('ready', () => {
 //});
 
 
-client.login('NjM4NjczOTE5ODEzMDkxMzY5.XblCjg.w1ckNAEGk3Tvnb2O6c5RRcWjE5A');
+client.login('Discord botkey');
 
 
 
